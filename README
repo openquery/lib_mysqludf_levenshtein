@@ -1,0 +1,33 @@
+# This example is provided in the hope that it will help you compile
+# the code on your server.  I offer no warranty, support, or anything like
+# that.  Good luck.  If you get errors, search the newsgroups.
+
+# It's a really good idea for you to read the UDF documentation in the MySQL
+# manual and the comments in the udf_example.cc file that's included with
+# the MySQL source distribution.
+
+# This is approximately how I compiled and installed the mysqllevenshtein.cc
+# code on a FreeBSD server.
+
+gcc -I/usr/local/include/mysql -O -pipe -o mysqllevenshtein.so -shared -L/usr/local/lib/mysql -lmysqlclient mysqllevenshtein.cc
+
+cp mysqllevenshtein.so /usr/local/lib/mysql/mysqllevenshtein.so
+
+# here are some notes I wrote when I was compiling the code for a SuSE Linux
+# system (kernel 2.4.19):
+
+---snip---
+## hey, these are the commands I used to compile these objects on 2004-01-09
+
+g++ -I/usr/local/mysql-standard-4.0.12-pc-linux-i686/include -O -pipe -o mysqllevenshtein.so -shared -L/usr/local/mysql-standard-4.0.12-pc-linux-i686/lib -lmysqlclient mysqllevenshtein.cc
+
+g++ -I/usr/local/mysql-standard-4.0.12-pc-linux-i686/include -O -pipe -o udf_example.so -shared -L/usr/local/mysql-standard-4.0.12-pc-linux-i686/lib -lmysqlclient udf_example.cc
+
+## actually, I originally used gcc, but when I tried to load the functions
+## into MySQL, I got some undefined symbol errors.  after some googling,
+## I thought I'd try g++ to force c++ linking... it worked
+
+## also, come to find out that ldconfig ignores filenames in "untrusted"
+## (which means "not /lib or /usr/lib", I think) directories if they don't
+## begin with "lib".  so, I had to rename the .so files to libwhatever.so
+---snip---
